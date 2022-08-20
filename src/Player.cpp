@@ -1,37 +1,83 @@
 #include "Player.hpp"
 
-Player::Player(const std::string &name, const Color &color) : Entity()
+Player::Player(const std::string &name) : AEntity()
 {
-    mColor = color;
     mName = name;
+    mWeight = 5;
+
+    mTexture = LoadTexture("assets/player/player.png");
+    mBoundingBox = {
+        .x = 0,
+        .y = 0,
+        .width = 32,
+        .height = 64
+    };
+    mVelocity = {
+        .x = Player::MOVEMENT_SPEED,
+        .y = 1
+    };
 }
 
-// TODO: Use system of normalized vec2 to map input
-// e.g.: KEY_W --> Vector2(0, -1)
 void Player::update()
 {
-    if (IsKeyDown(KEY_A))
-    {
-        mPos.x -= 1;
-    }
-
-    if (IsKeyDown(KEY_D))
-    {
-        mPos.x += 1;
-    }
-
-    if (IsKeyDown(KEY_S))
-    {
-        mPos.y += 1;
-    }
-
-    if (IsKeyDown(KEY_W))
-    {
-        mPos.y -= 1;
-    }
 }
 
 void Player::draw()
 {
-    DrawRectangle(mPos.x, mPos.y, 20, 50, mColor);
+    const int thiccness = 10;
+
+    DrawRectangleLines(mBoundingBox.x, mBoundingBox.y, mBoundingBox.width, mBoundingBox.height, RED);
+    DrawTextureRec(
+        mTexture,
+        {.x = 0, .y = 0, .width = 32, .height = 64 },
+        mPos,
+        WHITE
+    );
+}
+
+bool Player::isInAir() const
+{
+    return mInAir;
+}
+
+void Player::setInAir(bool inAir)
+{
+    if (inAir == mInAir) {
+        return;
+    }
+
+    mInAir = inAir;
+}
+
+void Player::move(const Vector2 &direction)
+{
+    if (direction.x)
+    {
+        mPos.x += direction.x * mVelocity.x;
+        mBoundingBox.x = mPos.x;
+    }
+
+    if (direction.y)
+    {
+        mPos.y += direction.y * mWeight * mVelocity.y;
+        mBoundingBox.y = mPos.y;
+    }
+}
+
+const Rectangle &Player::getBoundingBox() const
+{
+    return mBoundingBox;
+}
+
+void Player::setVelocity(const Vector2 &velocity)
+{
+    mVelocity = velocity;
+}
+
+void Player::setPosition(const Vector2 &pos)
+{
+    AEntity::setPosition(pos);
+
+    mBoundingBox.x = pos.x;
+    mBoundingBox.y = pos.y;
 }

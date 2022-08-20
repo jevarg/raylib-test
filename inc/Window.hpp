@@ -6,15 +6,16 @@
 class Window
 {
 private:
-    int mWidth;
-    int mHeight;
+    Vector2 mSize;
     std::string mTitle;
 
 public:
-    Window(const int width, const int height, const std::string &title);
+    Window(const Vector2 &size, const std::string &title);
     ~Window();
 
     void open();
     void close();
     bool isOpen();
+    
+    Vector2 getSize() const;
 };

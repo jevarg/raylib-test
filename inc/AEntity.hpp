@@ -2,16 +2,16 @@
 
 #include <raylib.h>
 
-class Entity
+class AEntity
 {
 protected:
     Vector2 mPos;
 
 public:
-    Entity(const Vector2 &pos = { .x = 0, .y = 0 });
-    ~Entity(){};
+    AEntity(const Vector2 &pos = {.x = 0, .y = 0});
+    ~AEntity(){};
 
-    virtual void update() = 0;
+    virtual void update(){}; // TODO: Add delta time
     virtual void draw() = 0;
 
     void setPosition(const Vector2 &pos);

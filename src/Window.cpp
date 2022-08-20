@@ -1,9 +1,8 @@
 #include "Window.hpp"
 
-Window::Window(const int width, const int height, const std::string &title)
+Window::Window(const Vector2 &size, const std::string &title)
 {
-    mWidth = width;
-    mHeight = height;
+    mSize = size;
     mTitle = title;
 }
 
@@ -14,7 +13,7 @@ Window::~Window()
 
 void Window::open()
 {
-    InitWindow(mWidth, mHeight, mTitle.c_str());
+    InitWindow(mSize.x, mSize.y, mTitle.c_str());
 }
 
 void Window::close()
@@ -30,4 +29,9 @@ void Window::close()
 bool Window::isOpen()
 {
     return !WindowShouldClose();
+}
+
+Vector2 Window::getSize() const
+{
+    return mSize;
 }
